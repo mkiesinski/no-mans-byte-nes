@@ -14,11 +14,16 @@
 
 ;;;;;;;; INITIALIZATION
 
-    LDA #$80
+    LDA #$80            ; set initial position
     STA playerPosX
     STA playerPosY
 
+    LDA #PLAYERSOUTHANIMATION   ; current frame address
+    STA playerFrame
 
+    LDA #$00
+    STA playerFrameCount        ; set frame count to 0
+    STA frame                   ; set current frame to 0
 
 ;;;;;;;; SET STARTING STATE
     LDA #STATEOVERWORLDINIT
@@ -33,7 +38,7 @@ LoadBackground:
   LDX #$00              ; start out at 0
   LDY #$00
 LoadBackgroundLoop:
-  LDA #$2E     ; load data from address (background + the value in x)
+  LDA #$2B     ; load data from address (background + the value in x)
   STA $2007             ; write to PPU
   INX                   ; X = X + 1
   CPX #$C0              ; Compare X to hex $80, decimal 128 - copying 128 bytes
@@ -99,8 +104,8 @@ NMI
     .org $E000
 
 palette:
-  .db $22,$2A,$33,$02,  $22,$16,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
-  .db $30,$1E,$18,$37,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
+  .db $22,$37,$33,$02,  $22,$16,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
+  .db $30,$1E,$16,$27,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
 
     .include "sprites/sprites.asm"
 
