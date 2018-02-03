@@ -1,0 +1,1 @@
+    .include "sprites/player.asm"
