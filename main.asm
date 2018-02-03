@@ -14,6 +14,9 @@
 
 ;;;;;;;; INITIALIZATION
 
+    LDA #$80
+    STA playerPosX
+    STA playerPosY
 
 
 
@@ -33,7 +36,7 @@ LoadBackgroundLoop:
   LDA #$2E     ; load data from address (background + the value in x)
   STA $2007             ; write to PPU
   INX                   ; X = X + 1
-  CPX #$A0              ; Compare X to hex $80, decimal 128 - copying 128 bytes
+  CPX #$C0              ; Compare X to hex $80, decimal 128 - copying 128 bytes
   BNE LoadBackgroundLoop  ; Branch to LoadBackgroundLoop if compare was Not Equal to zero
                         ; if compare was equal to 128, keep going down    
     INY
@@ -90,10 +93,6 @@ NMI
 
     .include "engine/overworld.asm"
     .include "engine/readController.asm"
-
-UpdateSprites:
-    RTS
-
     ;;;;;;;;;;;;;;;;;;;;;;
 
     .bank 1

@@ -8,5 +8,3 @@ GameEngine:
     BEQ EngineOverworld
 
 GameEngineDone:
-
-    JSR UpdateSprites

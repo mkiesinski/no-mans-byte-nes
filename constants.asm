@@ -15,3 +15,4 @@ BUTTONA         = $80
 
 ;;; PLAYER VARS
 PLAYERSPRITESIZE  = $10     ; each sprite has 4 values (Y,Sprite,Pallete,X) and player is built of 4 sprites
+PLAYERSPEED       = $02     ; speed of the player
