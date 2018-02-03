@@ -25,4 +25,7 @@ EAST            = $03
 ;;; PLAYER VARS
 PLAYERSPRITESIZE  = $10     ; each sprite has 4 values (Y,Sprite,Pallete,X) and player is built of 4 sprites
 PLAYERSPEED       = $02     ; speed of the player
-PLAYERSOUTHANIMATION = $00  ; address for animation moving south
+PLAYERSOUTHANIMATION = $00  ; address for animation moving south, etc
+PLAYERNORTHANIMATION = $00
+PLAYERWESTANIMATION  = $00
+PLAYEREASTANIMATION  = $00

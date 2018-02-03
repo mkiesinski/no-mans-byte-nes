@@ -19,14 +19,8 @@ LoadPlayerSpriteLoop:
     
 EngineOverworld:
     JSR playerMove
-    JSR updatePlayerPosition
-
-    LDA frame
-    AND #03
-    BNE skipPlayerSpriteUpdate
-    LDA playerInput
-    BEQ skipPlayerSpriteUpdate
     JSR updatePlayerSprite
+
 skipPlayerSpriteUpdate:
 
     JMP GameEngineDone
@@ -41,13 +35,36 @@ playerMoveRight:
     CMP #BUTTONRIGHT                ; check if RIGHT button is pressed (is 1)
     BNE playerMoveRightDone         ; if RIGHT not pressed (is 0), skip move logic
 
-    LDA playerPosX
+    LDA playerPosX                  ; update player position
     CLC
     ADC #PLAYERSPEED
     STA playerPosX
 
+    LDA playerDirection             ; load current facing direction
+    CMP #WEST
+    BEQ playerMoveRightAnimation     ; if we already face WEST, skip to animation
+
+    LDA PLAYERWESTANIMATION         ; set animation to moving WEST
+    STA playerFrame
     LDA #WEST                        ; set up facing direction
     STA playerDirection
+
+playerMoveRightAnimation:            ; animation logic
+    LDA frame
+    AND #07                          ; update every 8 frames
+    BNE playerMoveRightDone          ; skip rest if not updating
+
+    JSR playerAdvanceFrame
+
+    BEQ playerMoveRightFrameReset
+    LDA playerFrame
+    CLC
+    ADC #$04
+    STA playerFrame
+    JMP playerMoveRightDone
+playerMoveRightFrameReset:
+    LDA PLAYERWESTANIMATION
+    STA playerFrame
 
 playerMoveRightDone:
 
@@ -62,8 +79,31 @@ playerMoveLeft:
     SBC #PLAYERSPEED
     STA playerPosX
 
-    LDA #EAST
+    LDA playerDirection             ; load current facing direction
+    CMP #EAST
+    BEQ playerMoveLeftAnimation     ; if we already face WEST, skip to animation
+
+    LDA PLAYEREASTANIMATION         ; set animation to moving WEST
+    STA playerFrame
+    LDA #EAST                        ; set up facing direction
     STA playerDirection
+
+playerMoveLeftAnimation:            ; animation logic
+    LDA frame
+    AND #07                          ; update every 8 frames
+    BNE playerMoveLeftDone          ; skip rest if not updating
+
+    JSR playerAdvanceFrame
+
+    BEQ playerMoveLeftFrameReset
+    LDA playerFrame
+    CLC
+    ADC #$04
+    STA playerFrame
+    JMP playerMoveLeftDone
+playerMoveLeftFrameReset:
+    LDA PLAYEREASTANIMATION
+    STA playerFrame
 
 playerMoveLeftDone:
 
@@ -78,8 +118,31 @@ playerMoveDown:
     ADC #PLAYERSPEED
     STA playerPosY
 
-    LDA #SOUTH
+    LDA playerDirection             ; load current facing direction
+    CMP #SOUTH
+    BEQ playerMoveDownAnimation     ; if we already face WEST, skip to animation
+
+    LDA PLAYERSOUTHANIMATION         ; set animation to moving WEST
+    STA playerFrame
+    LDA #SOUTH                       ; set up facing direction
     STA playerDirection
+
+playerMoveDownAnimation:            ; animation logic
+    LDA frame
+    AND #07                          ; update every 8 frames
+    BNE playerMoveDownDone          ; skip rest if not updating
+
+    JSR playerAdvanceFrame
+
+    BEQ playerMoveDownFrameReset
+    LDA playerFrame
+    CLC
+    ADC #$04
+    STA playerFrame
+    JMP playerMoveDownDone
+playerMoveDownFrameReset:
+    LDA PLAYERSOUTHANIMATION
+    STA playerFrame
 
 playerMoveDownDone:
 
@@ -94,8 +157,31 @@ playerMoveUp:
     SBC #PLAYERSPEED
     STA playerPosY
 
-    LDA #NORTH
+    LDA playerDirection             ; load current facing direction
+    CMP #NORTH
+    BEQ playerMoveUpAnimation     ; if we already face WEST, skip to animation
+
+    LDA PLAYERNORTHANIMATION         ; set animation to moving WEST
+    STA playerFrame
+    LDA #NORTH                        ; set up facing direction
     STA playerDirection
+
+playerMoveUpAnimation:            ; animation logic
+    LDA frame
+    AND #07                          ; update every 8 frames
+    BNE playerMoveUpDone          ; skip rest if not updating
+
+    JSR playerAdvanceFrame
+
+    BEQ playerMoveUpFrameReset
+    LDA playerFrame
+    CLC
+    ADC #$04
+    STA playerFrame
+    JMP playerMoveUpDone
+playerMoveUpFrameReset:
+    LDA PLAYERNORTHANIMATION
+    STA playerFrame    
 
 playerMoveUpDone:
 
@@ -133,7 +219,8 @@ playerADone:
 
     RTS
 
-updatePlayerPosition:
+updatePlayerSprite:
+    ;; Update the position of the sprite
     LDA playerPosY
     STA $0200
     STA $0204
@@ -149,33 +236,9 @@ updatePlayerPosition:
     ADC #$08
     STA $0207
     STA $020F
-    RTS
 
-updatePlayerSprite:
-    ;;; update frame count
-    LDA playerFrameCount
-    CLC         ; clear carry
-    ADC #$01    ; advance frame by one
-    AND #$01    ; keep only the bit for the current animation index, we are using only 2 frames
-    STA playerFrameCount    ; save the current frame count
-
-    ;; one animation for now
-playerFrameOne:
-    BEQ playerFrameTwo
+    ;; setup the sprites for player, at index $0200
     LDA playerFrame
-    CLC
-    ADC #$04    ; increase index by 4, next set of sprites
-    STA playerFrame
-    JMP playerFrameDone
-playerFrameTwo:
-    LDA playerFrame
-    SEC
-    SBC #$04    ; decrease index by 4, previous set of sprites
-    STA playerFrame
-playerFrameDone:
-
-playerRedrawSprite:
-    ;; setup the sprites for player, at index $0200, we still should have the frame in the accumulator
     LDX #$04    ; 4 sprites to update
     LDY #$00    ; offset
 playerRefreshFrame:
@@ -189,4 +252,12 @@ playerRefreshFrame:
     DEX           ; one less sprite to load
     BNE playerRefreshFrame
 
+    RTS
+
+playerAdvanceFrame:
+    LDA playerFrameCount    ; load frame count    
+    CLC                     ; clear carry
+    ADC #$01                ; advance frame by one
+    AND #$01                ; keep only the bit for the current animation index, we are using only 2 frames
+    STA playerFrameCount    ; save the current frame count
     RTS
