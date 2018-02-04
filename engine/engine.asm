@@ -14,3 +14,5 @@ IncFrame:
     LDA #$00
     STA frame
 IncFrameDone:
+
+    .include "engine/render"

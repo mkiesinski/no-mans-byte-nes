@@ -27,18 +27,19 @@ playerMoveRight:
     STA playerDirection
     LDA #$10                        ; frame 0 of walking right animation
     STA playerFrameControl          ; store in the frame control
-    JMP playerMoveRightDone         ; done
+    JMP playerMoveRightReturn        ; done
 
 playerMoveRightUpdateFrame:
     LDA playerFrame
     CMP #$04
-    BNE playerMoveRightDone
+    BNE playerMoveRightReturn
 
     LDA #$14                        ; max frame
     STA maxFrame                    ; store to max Frame memory, we do this to keep Accumulator 
     LDX #$10                        ; frame 0 of walking right animation
     JSR PlayerGetNextFrame          ; execute getting new frame
-
+playerMoveRightReturn
+    JMP processPlayerDone
 playerMoveRightDone:
 
 playerMoveLeft:                 
@@ -60,18 +61,20 @@ playerMoveLeft:
     STA playerDirection
     LDA #$10                        ; frame 0 of walking right animation
     STA playerFrameControl          ; store in the frame control
-    JMP playerMoveLeftDone         ; done
+    JMP playerMoveLeftReturn        ; done
 
 playerMoveLeftUpdateFrame:
     LDA playerFrame
     CMP #$04
-    BNE playerMoveLeftDone
+    BNE playerMoveLeftReturn
 
     LDA #$14                        ; max frame
     STA maxFrame                    ; store to max Frame memory, we do this to keep Accumulator 
     LDX #$10                        ; frame 0 of walking right animation
     JSR PlayerGetNextFrame          ; execute getting new frame    
 
+playerMoveLeftReturn:
+    JMP processPlayerDone
 playerMoveLeftDone:
 
 playerMoveDown:
@@ -93,18 +96,20 @@ playerMoveDown:
     STA playerDirection
     LDA #$00                        ; frame 0 of walking down animation
     STA playerFrameControl          ; store in the frame control
-    JMP playerMoveDownDone         ; done
+    JMP playerMoveDownReturn         ; done
 
 playerMoveDownUpdateFrame:
     LDA playerFrame
     CMP #$04
-    BNE playerMoveDownDone
+    BNE playerMoveDownReturn
 
     LDA #$04                        ; max frame
     STA maxFrame                    ; store to max Frame memory, we do this to keep Accumulator 
     LDX #$00                        ; frame 0 of walking down animation
-    JSR PlayerGetNextFrame          ; execute getting new frame    
+    JSR PlayerGetNextFrame          ; execute getting new frame  
 
+playerMoveDownReturn:
+    JMP processPlayerDone
 playerMoveDownDone:
 
 playerMoveUp:
@@ -126,18 +131,19 @@ playerMoveUp:
     STA playerDirection
     LDA #$08                        ; frame 0 of walking down animation
     STA playerFrameControl          ; store in the frame control
-    JMP playerMoveUpDone            ; done
+    JMP playerMoveUpReturn            ; done
 
 playerMoveUpUpdateFrame:
     LDA playerFrame
     CMP #$04
-    BNE playerMoveUpDone
+    BNE playerMoveUpReturn
 
     LDA #$0C                        ; max frame
     STA maxFrame                    ; store to max Frame memory, we do this to keep Accumulator 
     LDX #$08                        ; frame 0 of walking down animation
     JSR PlayerGetNextFrame          ; execute getting new frame    
-
+playerMoveUpReturn:
+    JMP processPlayerDone
 playerMoveUpDone:
 
 playerStart:
@@ -146,6 +152,8 @@ playerStart:
     CMP #BUTTONSTART
     BNE playerStartDone
 
+playerStartReturn:
+    JMP processPlayerDone
 playerStartDone:
 
 playerSelect:
@@ -154,6 +162,8 @@ playerSelect:
     CMP #BUTTONSELECT
     BNE playerSelectDone
 
+playerSelectReturn:
+    JMP processPlayerDone
 playerSelectDone:
 
 playerB:
@@ -162,6 +172,8 @@ playerB:
     CMP #BUTTONB
     BNE playerBDone
 
+playerBReturn:
+    JMP processPlayerDone
 playerBDone:
 
 playerA:
@@ -170,29 +182,10 @@ playerA:
     CMP #BUTTONA
     BNE playerADone
 
+playerAReturn:
+    JMP processPlayerDone
 playerADone:
 
-DrawPlayer:
-    LDA #$02
-    STA rowsToDraw
-    LDA playerPosX
-    STA spriteX
-    LDA playerPosY
-    STA spriteY
-    LDA playerDirection
-    STA spriteDirection
-    LDA playerAttributes
-    STA spriteAttributes
-    LDX playerFrameControl
-    LDY #PLAYER_SPRDATA_OFFSET
-
-DrawPlayerLoop:
-    LDA PlayerGraphicsTable,x
-    STA spriteTileFirst
-    LDA PlayerGraphicsTable+1,x
-    JSR DrawOneSpriteRow
-    DEC rowsToDraw
-    BNE DrawPlayerLoop 
     JMP processPlayerDone
 
 PlayerGetNextFrame:
