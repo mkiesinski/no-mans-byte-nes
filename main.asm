@@ -18,15 +18,15 @@
     STA playerPosX
     STA playerPosY
 
-    LDA #PLAYERSOUTHANIMATION   ; current frame address
-    STA playerFrame
-
-    LDA #$00
-    STA playerFrameCount        ; set frame count to 0
-    STA frame                   ; set current frame to 0
+    LDA #$00                
+    STA playerFrameControl  ; set Frame control
+    STA playerFlip          ; set Flip
+    STA playerAttributes    ; set attributes
+    STA playerDirection     ; set direction
+    STA frame               ; set current frame to 0
 
 ;;;;;;;; SET STARTING STATE
-    LDA #STATEOVERWORLDINIT
+    LDA #STATEOVERWORLD
     STA gamestate
 
 LoadBackground:
@@ -97,6 +97,7 @@ NMI
 ;;;;;;;;;;;;;;
 
     .include "engine/overworld.asm"
+    .include "engine/drawsprite.asm"
     .include "engine/readController.asm"
     ;;;;;;;;;;;;;;;;;;;;;;
 

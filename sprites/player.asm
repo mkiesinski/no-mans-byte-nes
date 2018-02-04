@@ -1,5 +1,3 @@
-playerSpriteInitial:
-    .db $80,$00,$00,$80
-    .db $80,$01,$00,$88
-    .db $88,$02,$00,$80
-    .db $88,$03,$00,$88
+PlayerGraphicsTable:
+    .db $00, $01, $02, $03          ; walking south frame 1
+    .db $04, $05, $06, $07          ; walking south frame 2

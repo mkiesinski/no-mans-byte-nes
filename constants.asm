@@ -1,10 +1,13 @@
 ;; CONSTANTS
 ;;; ENGINE
-LASTFRAME = $0F
+;;;;;; SPRITE DRAWING ADDRESSES
+SPRITE_Y_POSITION   = $0200
+SPRITE_TILENUMBER   = $0201
+SPRITE_ATTRIBUTES   = $0202
+SPRITE_X_POSITION   = $0203
 
 ;;; STATES
-STATEOVERWORLDINIT  = $01
-STATEOVERWORLD    = $02
+STATEOVERWORLD    = $01
 
 ;;; BUTTONS
 BUTTONRIGHT     = $01
@@ -17,15 +20,12 @@ BUTTONB         = $40
 BUTTONA         = $80
 
 ;;; GENERAL
-NORTH           = $00
-WEST            = $01
-SOUTH           = $02
+SOUTH           = $00
+NORTH            = $01
+WEST           = $02
 EAST            = $03
 
 ;;; PLAYER VARS
-PLAYERSPRITESIZE  = $10     ; each sprite has 4 values (Y,Sprite,Pallete,X) and player is built of 4 sprites
 PLAYERSPEED       = $02     ; speed of the player
-PLAYERSOUTHANIMATION = $00  ; address for animation moving south, etc
-PLAYERNORTHANIMATION = $00
-PLAYERWESTANIMATION  = $00
-PLAYEREASTANIMATION  = $00
+PLAYER_GFX_OFFSET = $00     ; offset of character sprites
+PLAYER_SPRDATA_OFFSET  = $00
