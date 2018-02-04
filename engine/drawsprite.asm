@@ -3,7 +3,7 @@ DrawOneSpriteRow:
     JMP DrawSpriteObject
 
 DrawSpriteObject:
-    LDA spriteFlipControl       ; get flip control bits
+    LDA spriteDirection        ; get flip control bits
     LSR A
     LSR A                        ; move d1 into carry
     LDA spriteTileFirst

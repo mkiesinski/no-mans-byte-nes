@@ -20,10 +20,10 @@ BUTTONB         = $40
 BUTTONA         = $80
 
 ;;; GENERAL
-SOUTH           = $00
-NORTH            = $01
-WEST           = $02
-EAST            = $03
+RIGHT           = $01
+LEFT            = $02
+UP              = $04
+DOWN            = $08
 
 ;;; PLAYER VARS
 PLAYERSPEED       = $02     ; speed of the player

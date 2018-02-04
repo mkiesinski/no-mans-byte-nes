@@ -18,12 +18,8 @@
     STA playerPosX
     STA playerPosY
 
-    LDA #$00                
-    STA playerFrameControl  ; set Frame control
-    STA playerFlip          ; set Flip
-    STA playerAttributes    ; set attributes
-    STA playerDirection     ; set direction
-    STA frame               ; set current frame to 0
+    LDA #DOWN
+    STA playerDirection     ; set player direction down
 
 ;;;;;;;; SET STARTING STATE
     LDA #STATEOVERWORLD
