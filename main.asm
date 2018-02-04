@@ -3,9 +3,11 @@
     .inesmap 0          ; no mapper
     .inesmir 1          ; background mirroring
 
+    .include "nes_constants.asm"
+    .include "constants.asm"
+
     .rsset $0000
     .include "variables.asm"
-    .include "constants.asm"
 
     .bank 0
     .org $C000
@@ -26,16 +28,16 @@
     STA gamestate
 
 LoadBackground:
-  LDA $2002             ; read PPU status to reset the high/low latch
+  LDA PPUCTRL             ; read PPU status to reset the high/low latch
   LDA #$20
-  STA $2006             ; write the high byte of $2000 address
+  STA PPUADDR             ; write the high byte of $2000 address
   LDA #$00
-  STA $2006             ; write the low byte of $2000 address
+  STA PPUADDR             ; write the low byte of $2000 address
   LDX #$00              ; start out at 0
   LDY #$00
 LoadBackgroundLoop:
   LDA #$2B     ; load data from address (background + the value in x)
-  STA $2007             ; write to PPU
+  STA PPUDATA             ; write to PPU
   INX                   ; X = X + 1
   CPX #$C0              ; Compare X to hex $80, decimal 128 - copying 128 bytes
   BNE LoadBackgroundLoop  ; Branch to LoadBackgroundLoop if compare was Not Equal to zero
@@ -45,15 +47,15 @@ LoadBackgroundLoop:
     BNE LoadBackgroundLoop
 
 LoadAttr:
-    LDA $2002
+    LDA PPUSTATUS
     LDA #$23
-    STA $2006
+    STA PPUADDR
     LDA #$C0
-    STA $2006
+    STA PPUADDR
     LDX #$00
 LoadAttrLoop:
     LDA #$00
-    STA $2007
+    STA PPUDATA
     INX
     CPX #$40
     BNE LoadAttrLoop
@@ -68,17 +70,17 @@ Forever:
 
 NMI
     LDA #$00
-    STA $2003
+    STA OAMADDR
     LDA #$02
-    STA $4014
+    STA OAMDMA
 
     LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
-    STA $2000
+    STA PPUCTRL
     LDA #%00011110   ; enable sprites, enable background, no clipping on left side
-    STA $2001
+    STA PPUMASK
     LDA #$00        ;;tell the ppu there is no background scrolling
-    STA $2005
-    STA $2005
+    STA PPUSCROLL
+    STA PPUSCROLL
 
     ;;;;;; graphic updates end here
 

@@ -1,11 +1,11 @@
 ReadControler:
     LDA #$01
-    STA $4016
+    STA JOYPAD1
     LDA #$00
-    STA $4016
+    STA JOYPAD1
     LDX #$08
 ReadControllerLoop:
-    LDA $4016
+    LDA JOYPAD1
     LSR A
     ROL playerInput
     DEX
