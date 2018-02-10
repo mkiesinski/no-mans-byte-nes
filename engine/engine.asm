@@ -1,6 +1,10 @@
 GameEngine:
     LDA gamestate
-    CMP #STATEOVERWORLD
+
+    CMP #STATE_OVERWORLD_INIT
+    BEQ EngineOverworldInit
+
+    CMP #STATE_OVERWORLD
     BEQ EngineOverworld
 
 GameEngineDone:
@@ -14,5 +18,3 @@ IncFrame:
     LDA #$00
     STA frame
 IncFrameDone:
-
-    .include "engine/render"

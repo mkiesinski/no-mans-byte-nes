@@ -24,49 +24,15 @@
     STA playerDirection     ; set player direction down
 
 ;;;;;;;; SET STARTING STATE
-    LDA #STATEOVERWORLD
+    LDA #STATE_OVERWORLD_INIT
     STA gamestate
 
-LoadBackground:
-  LDA PPUCTRL             ; read PPU status to reset the high/low latch
-  LDA #$20
-  STA PPUADDR             ; write the high byte of $2000 address
-  LDA #$00
-  STA PPUADDR             ; write the low byte of $2000 address
-  LDX #$00              ; start out at 0
-  LDY #$00
-LoadBackgroundLoop:
-  LDA #$2B     ; load data from address (background + the value in x)
-  STA PPUDATA             ; write to PPU
-  INX                   ; X = X + 1
-  CPX #$C0              ; Compare X to hex $80, decimal 128 - copying 128 bytes
-  BNE LoadBackgroundLoop  ; Branch to LoadBackgroundLoop if compare was Not Equal to zero
-                        ; if compare was equal to 128, keep going down    
-    INY
-    CPY #$04
-    BNE LoadBackgroundLoop
-
-LoadAttr:
-    LDA PPUSTATUS
-    LDA #$23
-    STA PPUADDR
-    LDA #$C0
-    STA PPUADDR
-    LDX #$00
-LoadAttrLoop:
-    LDA #$00
-    STA PPUDATA
-    INX
-    CPX #$40
-    BNE LoadAttrLoop
-
     LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
-    STA $2000
+    STA PPUCTRL
     LDA #%00011110   ; enable sprites, enable background, no clipping on left side
-    STA $2001
+    STA PPUMASK
 Forever:
     JMP Forever
-
 
 NMI
     LDA #$00
@@ -90,22 +56,25 @@ NMI
 
     RTI
 
-
-
 ;;;;;;;;;;;;;;
 
     .include "engine/overworld.asm"
+
+    ;; HELPER SUBROUTINES
     .include "engine/drawsprite.asm"
     .include "engine/readController.asm"
+    .include "engine/renderMap.asm"
     ;;;;;;;;;;;;;;;;;;;;;;
 
     .bank 1
     .org $E000
 
 palette:
-  .db $22,$37,$33,$02,  $22,$16,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
+  .db $30,$37,$16,$27,  $22,$16,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
   .db $30,$1E,$16,$27,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
 
+    .include "maps/tileset.asm"
+    .include "maps/map00.asm"
     .include "sprites/sprites.asm"
 
     .org $FFFA
