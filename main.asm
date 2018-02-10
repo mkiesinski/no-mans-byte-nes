@@ -10,8 +10,8 @@
     .include "variables.asm"
 
     .bank 0
-    .include "maps/map00.asm"
     .org $8000
+    .include "maps/map00.asm"
 
     .bank 1
     .org $A000

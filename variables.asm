@@ -20,12 +20,12 @@ playerAttributes .rs 1
 playerPosX  .rs 1
 playerPosY  .rs 1
 playerFrameControl .rs 1
+playerFrame .rs 1
 
 ;; map rendering
 background_row  .rs $20
 data_x  .rs 1
 data_y  .rs 1
-playerFrame .rs 1
 mapPointer .rs 2
 metaTilesetPointer .rs 2
 metaTilePointer .rs 2
