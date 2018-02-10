@@ -1,5 +1,8 @@
 renderMapSub:
-    
+    LDA #$00        ; reset counters from previous map loading
+    STA data_x
+    STA data_y
+
 background_start:
     LDA repeatMetaTile
     BEQ .jump

@@ -34,3 +34,9 @@ APU_CHANCTRL    = $4015
 ; Joypad registers
 JOYPAD1	        = $4016
 JOYPAD2	        = $4017
+
+; Nametables
+NAMETABLE1      = $2000
+NAMETABLE2      = $2400
+NAMETABLE3      = $2800
+NAMETABLE4      = $2C00
