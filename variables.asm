@@ -30,3 +30,8 @@ mapPointer .rs 2
 metaTilesetPointer .rs 2
 metaTilePointer .rs 2
 repeatMetaTile .rs 1
+
+;; enemies
+enemyPointer    .rs 2
+enemies     .rs $30    ;; space for 6 enemies, each takes up 8 bytes
+enemiesOffset .rs 1

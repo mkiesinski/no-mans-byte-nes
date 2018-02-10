@@ -4,6 +4,8 @@ EngineOverworldInit:
     STA PPUMASK             ; disable rendering
     STA APU_MODCTRL         ; disable DMC IRQs
 
+    ;; LOAD MAP
+
     LDA #LOW(map00)     ; load the initial map pointer
     STA mapPointer
     LDA #HIGH(map00)
@@ -17,6 +19,15 @@ EngineOverworldInit:
 
     JSR renderMapSub        ; render map
 
+    ;; LOAD ENEMIES
+
+    LDA #LOW(map00_enemydata)
+    STA enemyPointer
+    LDA #HIGH(map00_enemydata)
+    STA enemyPointer+1
+
+    JSR loadEnemiesSub
+
     LDA #STATE_OVERWORLD     ; set state
     STA gamestate
 
@@ -29,5 +40,5 @@ EngineOverworldInit:
 
 EngineOverworld:
     .include "engine/player.asm"
-    .include "engine/renderPlayer.asm"
+    .include "engine/enemies.asm"
     JMP GameEngineDone

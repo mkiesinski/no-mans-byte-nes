@@ -186,19 +186,5 @@ playerAReturn:
     JMP processPlayerDone
 playerADone:
 
-    JMP processPlayerDone
-
-PlayerGetNextFrame:
-    LDA playerFrameControl          ; Load the current Frame
-    CMP maxFrame
-    BEQ PlayerGetNextFrameReset
-    CLC
-    ADC #$04
-    JMP PlayerGetNextFrameDone
-PlayerGetNextFrameReset:
-    TXA
-PlayerGetNextFrameDone:
-    STA playerFrameControl          ; store the next frame
-    RTS
-
 processPlayerDone:
+    JSR DrawPlayer

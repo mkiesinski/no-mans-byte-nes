@@ -18,4 +18,20 @@ DrawPlayerLoop:
     LDA PlayerGraphicsTable+1,x
     JSR DrawOneSpriteRow
     DEC rowsToDraw
-    BNE DrawPlayerLoop 
+    BNE DrawPlayerLoop
+
+    RTS
+
+PlayerGetNextFrame:
+    LDA playerFrameControl          ; Load the current Frame
+    CMP maxFrame
+    BEQ PlayerGetNextFrameReset
+    CLC
+    ADC #$04
+    JMP PlayerGetNextFrameDone
+PlayerGetNextFrameReset:
+    TXA
+PlayerGetNextFrameDone:
+    STA playerFrameControl          ; store the next frame
+    
+    RTS

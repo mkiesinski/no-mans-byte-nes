@@ -1,0 +1,2 @@
+processEnemies:
+    JSR drawEnemies

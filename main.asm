@@ -40,6 +40,8 @@
     .include "engine/readController.asm"
     .include "engine/drawsprite.asm"
     .include "engine/renderMap.asm"
+    .include "engine/renderPlayer.asm"
+    .include "engine/renderEnemies.asm"
 
     ;; START
     .include "init.asm"
@@ -54,7 +56,7 @@ NMI
 
 palette:
     .db $30,$37,$16,$27,  $22,$16,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
-    .db $30,$1E,$16,$27,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
+    .db $30,$1E,$16,$27,  $30,$0F,$16,$30,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
 
     .include "maps/tileset.asm"
     .include "sprites/sprites.asm"
