@@ -9,6 +9,12 @@ EngineOverworldInit:
     LDA #HIGH(map00)
     STA mapPointer+1
 
+    LDA PPUSTATUS            ; read PPU status to reset the high/low latch
+    LDA #$20
+    STA PPUADDR             ; write the high byte of $2000 address
+    LDA #$00
+    STA PPUADDR             ; write the low byte of $2000 address
+
     JSR renderMapSub        ; render map
 
     LDA #STATE_OVERWORLD     ; set state

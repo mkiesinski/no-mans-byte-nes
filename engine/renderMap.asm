@@ -1,9 +1,4 @@
 renderMapSub:
-    LDA PPUSTATUS            ; read PPU status to reset the high/low latch
-    LDA #$20
-    STA PPUADDR             ; write the high byte of $2000 address
-    LDA #$00
-    STA PPUADDR             ; write the low byte of $2000 address
     
 background_start:
     LDA repeatMetaTile
