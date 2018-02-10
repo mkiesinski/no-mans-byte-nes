@@ -7,10 +7,10 @@ spriteX           .rs 1
 rowsToDraw        .rs 1
 maxFrame          .rs 1
 
-pointerLo   .rs 1
-pointerHi   .rs 1
-
 gamestate   .rs 1
+palleteID   .rs 1
+source      .rs 2
+sourceBank  .rs 1
 playerInput .rs 1
 frame       .rs 1
 

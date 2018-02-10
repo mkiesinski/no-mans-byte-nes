@@ -1,8 +1,3 @@
-VBlankWait:              ; wait for vblank
-    BIT $2002
-    BPL VBlankWait
-    RTS
-
 RESET:
     SEI                 ; disable IRQs
     CLD                 ; disable decimal
@@ -17,6 +12,12 @@ RESET:
 
     JSR VBlankWait
 
+    JSR ConfigWrite
+
+    LDA #$00
+    STA sourceBank
+    JSR PRGBankWrite        ; do switch Bank switch to enable WRAM
+
 clrmem:
     LDA #$00
     STA $0000, x
@@ -26,6 +27,13 @@ clrmem:
     STA $0500, x
     STA $0600, x
     STA $0700, x
+
+    STA $6000, x
+    STA $6100, x
+    STA $6200, x
+    STA $6300, x
+    STA $6400, x
+
     LDA #$FE
     STA $0200, x
     INX
@@ -33,17 +41,8 @@ clrmem:
 
     JSR VBlankWait
 
-LoadPalettes:
-    LDA PPUSTATUS       ; read PPU to reset h/l latch
-    LDA #$3F
-    STA PPUADDR       ; write high byte of $3F00
+;; Load graphics information
     LDA #$00
-    STA PPUADDR       ; write low byte of $3F00
-    
-    LDX #$00                ; set X to 0
-LoadPalletesLoop:
-    LDA palette, x          ; load pallete at index X
-    STA PPUDATA               ; write the value to PPU
-    INX                     ; increment X
-    CPX #$20                ; check if X is 32
-    BNE LoadPalletesLoop    ; if not, go to the start of the loop
+    STA palleteID
+    JSR LoadCHRAM
+    JSR LoadPalettes
